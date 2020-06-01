@@ -1,5 +1,5 @@
 import fake_useragent
-import requests
+import requests, os.path
 from bs4 import BeautifulSoup as bs
 
 ua = fake_useragent.UserAgent()
@@ -12,8 +12,8 @@ proxies = {
 session = requests.Session()
 line = "---------------------------------------------------------------"
 ipSite = 'http://icanhazip.com'
-adress = requests.get(ipSite, headers=header, proxies=proxies)
-start_url = "http://nnmclub.to/forum/tracker.php"
+
+url = "http://nnmclub.to/forum/tracker.php"
 load = {
     'prev_sd': '0',
     'prev_a': '0',
@@ -38,17 +38,67 @@ load = {
     'pn': '',
     'submit': ''}
 
-print(header)
-print(line + "\n[*] IP your network:\n" + adress.text + line)
+single_url = "http://nnmclub.to/forum/viewtopic.php?t=1387271"
 
-content = session.post(start_url, headers=header, proxies=proxies, data=load)
-soup = bs(content.text, 'lxml')
-find_class = soup.find_all('a', attrs={'class': 'genmed topictitle'})
-for i in find_class:
-    print(i)
-find_class = soup.find_all('td', attrs={'class': 'genmed'})
-for j in find_class:
-    print(j)
+def get_link():
+    with open(f'page{single_url[-7:]}.html', 'r', encoding='utf8') as file:
+        link = bs(file, 'lxml')
+        # print(link)
+        ta = link.find_all('a')
+        for a in ta:
+            print(a)
+        # [el.extract() for el in link.select("[style*='border-spacing: 2px;']")]
+        # print(link.prettify())
+        # print(ta)
 
-with open('nmclub.html', 'wb') as file:
-    file.writelines(content)
+
+        # for b in ta:
+        #     print(b)
+        # ta = link.find_all('td')
+        # for j in ta:
+        #     links = j.find('a').get('href')
+        # print(links)
+        # print(ta)
+        # for b in link:
+        #     tdd = b.find('href')
+        #     print(tdd)
+get_link()
+
+
+def getfile(single_url, header, proxies, ipSite):
+    adress = requests.get(ipSite, headers=header, proxies=proxies)
+    print(header)
+    print(line + "\n[*] IP your network:\n" + adress.text + line)
+    if os.path.exists(f'page{single_url[-7:]}.html'):
+        os.remove(f'page{single_url[-7:]}.html')
+    single_film = session.post(url, headers=header, proxies=proxies)
+    page = bs(single_film.text, 'lxml')
+    with open(f'page{single_url[-7:]}.html', 'w', encoding='utf8') as f:
+        f.writelines(str(page))
+
+
+
+getfile(single_url, header, proxies, ipSite)
+
+# def getfilms(url, header, proxies, load):
+#     if os.path.exists('nmclub.html'):
+#         os.remove('nmclub.html')
+#
+#     content = session.post(url, headers=header, proxies=proxies, data=load)
+#     soup = bs(content.text, 'lxml')
+#     films = []
+#     find_class_td = soup.find_all('td', attrs={'class': 'genmed'})
+#
+#     for j in find_class_td:
+#         link = j.find('a').get('href')
+#         films.append({
+#             j.text: link
+#         })
+#         print('Title:' + ' ' + j.text + ' ' + 'Link:' + ' ' + link)
+#
+#         with open('nmclub.html', 'a', encoding='utf-8') as file:
+#             file.writelines('\n' + str(j))
+#     print(films)
+#
+#
+# getfilms(url, header, proxies, load)
