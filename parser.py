@@ -20,8 +20,8 @@ ipSite = 'http://icanhazip.com'
 url = "http://nnmclub.to/forum/tracker.php"
 login_url = "http://nnmclub.to/forum/login.php"
 form = {
-    'username': xxx,
-    'password': xxx,
+    'username': '',
+    'password': '',
     'redirect': '',
     'code': '',
     'login': ''
@@ -60,6 +60,16 @@ def getfile(download_link, name):
     with open(f'{dir}/{name}.torrent', 'wb') as f:
         f.write(file.content)
 
+def genre(page):
+    soup = bs(page.text, 'lxml')
+    find_div = soup.find_all('div', attrs={'class': 'postbody'})
+    find_span = find_div[0].find_all('span', attrs={'style': 'font-weight: bold'})
+    startpos = str(find_div[0]).find(f'{find_span[2]}') + len(f'{find_span[2]}')
+    endpos = str(find_div[0]).find('<br/><br/>', startpos)
+    genre_string = str(find_div[0])[startpos:endpos].strip()
+    # print(str(find_div[0])[startpos:endpos].strip())
+    return genre_string
+
 
 def getlink(single_url, header, proxies, name):
     single_film = session.get(single_url, headers=header, proxies=proxies)
@@ -69,7 +79,7 @@ def getlink(single_url, header, proxies, name):
 
     for a in link:
         download_link = f'http://nnmclub.to/forum/{str(a["href"])}'
-        print('Download_link:' + ' ' + download_link)
+        print('Download_link:' + ' ' + download_link + '\n' + 'Жанр: ' + genre(single_film))
         regex = r"\d+,"
         for i in range(0, 18, 2):
             # print(i)
