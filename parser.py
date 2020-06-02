@@ -1,5 +1,5 @@
 import fake_useragent
-import requests, os.path, re
+import requests, os.path
 from bs4 import BeautifulSoup as bs
 
 ua = fake_useragent.UserAgent()
@@ -41,15 +41,6 @@ load = {
     'nm': '',
     'pn': '',
     'submit': ''}
-
-
-# def get_link(single_url):
-#     with open(f'page{single_url[-7:]}.html', 'r', encoding='utf8') as file:
-#         links = bs(file, 'lxml')
-#         pattern = 'Скачать'
-#         link = links.find_all('a', text=pattern, attrs={'rel': 'nofollow'})
-#         for a in link:
-#             print(a)
 
 
 def getfile(single_url, header, proxies):
