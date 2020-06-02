@@ -20,8 +20,8 @@ ipSite = 'http://icanhazip.com'
 url = "http://nnmclub.to/forum/tracker.php"
 login_url = "http://nnmclub.to/forum/login.php"
 form = {
-    'username': 'narcom1207',
-    'password': 'microlab',
+    'username': xxx,
+    'password': xxx,
     'redirect': '',
     'code': '',
     'login': ''
