@@ -5,7 +5,6 @@ from bs4 import BeautifulSoup as bs
 ua = fake_useragent.UserAgent()
 user = ua.random
 session = requests.Session()
-useragent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36'
 header = {'User-Agent': str(user)}
 proxies = {
     'http': 'socks5://192.168.1.3:9100',
@@ -44,31 +43,23 @@ load = {
     'submit': ''}
 
 
-def get_link(single_url):
-    with open(f'page{single_url[-7:]}.html', 'r', encoding='utf8') as file:
-        links = bs(file, 'lxml')
-        pattern = 'Скачать'
-        link = links.find_all('a', text=pattern, attrs={'rel': 'nofollow'})
-        for a in link:
-            print(a)
+# def get_link(single_url):
+#     with open(f'page{single_url[-7:]}.html', 'r', encoding='utf8') as file:
+#         links = bs(file, 'lxml')
+#         pattern = 'Скачать'
+#         link = links.find_all('a', text=pattern, attrs={'rel': 'nofollow'})
+#         for a in link:
+#             print(a)
 
-
-# get_link('http://nnmclub.to/forum/viewtopic.php?t=1379359')
 
 def getfile(single_url, header, proxies):
-    # if os.path.exists(f'page{single_url[-7:]}.html'):
-    #     os.remove(f'page{single_url[-7:]}.html')
     single_film = session.get(single_url, headers=header, proxies=proxies)
     page = bs(single_film.text, 'lxml')
     pattern = 'Скачать'
     link = page.find_all('a', text=pattern, attrs={'rel': 'nofollow'})
     for a in link:
-        # print(str(a['href']))
         download_link = f'http://nnmclub.to/forum/{str(a["href"])}'
         print('Download_link:' + ' ' + download_link + '\n')
-    # with open(f'page{single_url[-7:]}.html', 'w', encoding='utf8') as f:
-    #     f.writelines(str(page))
-    # get_link(single_url)
 
 
 def getfilms(url, header, proxies, load):
@@ -92,8 +83,6 @@ def getfilms(url, header, proxies, load):
         single_url = f"http://nnmclub.to/forum/{link}"
         print(single_url)
         getfile(single_url, header, proxies)
-
-
 
 
 getfilms(url, header, proxies, load)
