@@ -18,6 +18,14 @@ line = "---------------------------------------------------------------"
 ipSite = 'http://icanhazip.com'
 
 url = "http://nnmclub.to/forum/tracker.php"
+login_url = "http://nnmclub.to/forum/login.php"
+form = {
+    'username': 'narcom1207',
+    'password': 'microlab',
+    'redirect': '',
+    'code': '',
+    'login': ''
+}
 load = {
     'prev_sd': '0',
     'prev_a': '0',
@@ -47,6 +55,7 @@ def getfile(download_link, name):
     file = session.get(download_link, proxies=proxies)
     name = name.replace('/', '_')
     name = name.replace(':', '-')
+    name = name.replace('|', '-')
     dir = os.path.abspath('downloads')
     with open(f'{dir}/{name}.torrent', 'wb') as f:
         f.write(file.content)
@@ -61,28 +70,26 @@ def getlink(single_url, header, proxies, name):
     for a in link:
         download_link = f'http://nnmclub.to/forum/{str(a["href"])}'
         print('Download_link:' + ' ' + download_link)
-
         regex = r"\d+,"
         for i in range(0, 18, 2):
             # print(i)
             size = page.find_all('span', attrs={'title': f'Размер блока: {i} MB'})
             for b in size:
-                print("Размер торрента составляет: " + re.search(regex, b.get_text()).group(0) + '\n')
+                print("Размер торрента составляет: " + b.get_text() + '\n')
                 try:
                     filesize = int(re.search(regex, b.get_text()).group(0)[:-1])
                     if filesize <= 15:
                         getfile(download_link, name)
-
                 except AttributeError:
                     print('Not a file')
 
 
 def getfilms(url, header, proxies, load):
+    if os.path.exists('nmclub.html'):
+        os.remove('nmclub.html')
     adress = requests.get(ipSite, headers=header, proxies=proxies)
     print(header)
     print(line + "\n[*] IP your network:\n" + adress.text + line)
-    if os.path.exists('nmclub.html'):
-        os.remove('nmclub.html')
     content = session.post(url, headers=header, proxies=proxies, data=load)
     soup = bs(content.text, 'lxml')
     films = []
@@ -93,12 +100,22 @@ def getfilms(url, header, proxies, load):
         films.append({
             j.text: link
         })
-        print('Title:' + ' ' + j.text + ' ' + 'Link:' + ' ' + link)
         with open('nmclub.html', 'a', encoding='utf-8') as file:
-            file.writelines('\n' + str(j))
+            file.writelines('\n' + str(j.text))
         single_url = f"http://nnmclub.to/forum/{link}"
-        print(single_url)
+        print('Title:' + ' ' + j.text + ' ' + 'Link:' + ' ' + single_url)
         getlink(single_url, header, proxies, name)
 
 
-getfilms(url, header, proxies, load)
+def login(login_url, header, proxies, form):
+    if os.path.exists('auth_nmclub.html'):
+        os.remove('auth_nmclub.html')
+    login_page = session.post(login_url, headers=header, proxies=proxies, data=form)
+    # auth_page = session.post(login_page.url, headers=header, proxies=proxies, data=form)
+    with open('auth_nmclub.html', 'a', encoding='utf-8') as file:
+        file.writelines('\n' + login_page.text)
+    print(login_page.url)
+    getfilms(url, header, proxies, load)
+
+
+login(login_url, header, proxies, form)
