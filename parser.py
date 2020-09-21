@@ -15,8 +15,8 @@ proxies = {
 #     'https': 'socks5://171.112.94.9:38801',
 # }
 line = "---------------------------------------------------------------"
-ipSite = 'http://icanhazip.com'
-
+# ipSite = 'http://icanhazip.com'
+ipSite = 'http://yandex.ru/internet/'
 url = "http://nnmclub.to/forum/tracker.php"
 login_url = "http://nnmclub.to/forum/login.php"
 form = {
@@ -98,9 +98,9 @@ def getlink(single_url, header, proxies, name):
 def getfilms(url, header, proxies, load):
     if os.path.exists('nmclub.html'):
         os.remove('nmclub.html')
-    adress = requests.get(ipSite, headers=header, proxies=proxies)
-    print(header)
-    print(line + "\n[*] IP your network:\n" + adress.text + line)
+    # adress = requests.get(ipSite, headers=header, proxies=proxies)
+    # print(header)
+    # print(line + "\n[*] IP your network:\n" + adress.text + line)
     content = session.post(url, headers=header, proxies=proxies, data=load)
     soup = bs(content.text, 'lxml')
     films = []
