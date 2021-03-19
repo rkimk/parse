@@ -21,7 +21,7 @@ lxml==4.5.1
 lz4==3.0.2
 MarkupSafe==1.1.1
 paragraph==1.2.1
-Pillow==7.1.2
+Pillow==8.1.1
 pycryptodome==3.9.7
 Pygments==2.5.2
 PyPDF2==1.26.0
