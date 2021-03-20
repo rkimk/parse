@@ -12,7 +12,7 @@ docx==0.2.4
 docxtpl==0.10.0
 fake-useragent==0.1.11
 idna==2.9
-Jinja2==2.11.2
+Jinja2==2.11.3
 keyring==21.2.1
 kivy-deps.glew==0.1.12
 kivy-deps.gstreamer==0.1.18
