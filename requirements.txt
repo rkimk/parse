@@ -23,7 +23,7 @@ MarkupSafe==1.1.1
 paragraph==1.2.1
 Pillow==7.1.2
 pycryptodome==3.9.7
-Pygments==2.5.2
+Pygments==2.7.4
 PyPDF2==1.26.0
 pypiwin32==223
 PySocks==1.7.1
