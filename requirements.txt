@@ -29,7 +29,7 @@ pypiwin32==223
 PySocks==1.7.1
 python-docx==0.8.10
 pytz==2020.1
-pywin32==227
+pywin32==301
 pywin32-ctypes==0.2.0
 requests==2.23.0
 six==1.15.0
