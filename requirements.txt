@@ -17,7 +17,7 @@ keyring==21.2.1
 kivy-deps.glew==0.1.12
 kivy-deps.gstreamer==0.1.18
 kivy-deps.sdl2==0.1.23
-lxml==4.5.1
+lxml==4.6.5
 lz4==3.0.2
 MarkupSafe==1.1.1
 paragraph==1.2.1
